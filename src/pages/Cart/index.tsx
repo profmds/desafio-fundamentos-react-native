@@ -36,26 +36,39 @@ interface Product {
 }
 
 const Cart: React.FC = () => {
+  // increment, decrement e products são variáveis estabelecidas no contexto do useCart
   const { increment, decrement, products } = useCart();
 
   function handleIncrement(id: string): void {
-    // TODO
+    // increment é uma variável de contexto que funciona através de uma callBack que recebe o id como parâmetro
+    // o id é capturado pelo keyExtractor ao clicar no botão específico da lista e enviado ao contexto
+    increment(id);
   }
 
   function handleDecrement(id: string): void {
-    // TODO
+    decrement(id);
   }
 
   const cartTotal = useMemo(() => {
-    // TODO RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
-
-    return formatValue(0);
+    const sumOfCart = products.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0.0,
+    );
+    return formatValue(sumOfCart);
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
-    // TODO RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
+    // Para recuperar o valor total de itens utilizamos a função reduce
+    // uma arrow function com que recebe como parâmetro total que é o
+    // acumulador e product que representa cada item do array de products
+    // como corpo da função recebe a soma do incrementador com o acumulador
+    // e como segundo parâmetro de reduce o valor inicial do acumulador
+    const totalOfProductsInCart = products.reduce(
+      (total, product) => total + product.quantity,
+      0.0,
+    );
 
-    return 0;
+    return totalOfProductsInCart;
   }, [products]);
 
   return (

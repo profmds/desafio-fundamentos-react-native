@@ -124,10 +124,17 @@ const CartProvider: React.FC = ({ children }) => {
         productFound => productFound.id === id,
       );
 
-      if (productIndex > -1 && productsOfCart[productIndex].quantity > 1) {
-        productsOfCart[productIndex].quantity -= 1;
-
-        setProducts(productsOfCart);
+      if (productIndex > -1) {
+        if (productsOfCart[productIndex].quantity > 1) {
+          productsOfCart[productIndex].quantity -= 1;
+          setProducts(productsOfCart);
+        } else {
+          productsOfCart[productIndex].quantity -= 1;
+          const productsRemoved = products.filter(
+            productItem => productItem.quantity !== 0,
+          );
+          setProducts(productsRemoved);
+        }
       }
       await AsyncStorage.setItem(
         '@GoMarketplace:cart',
